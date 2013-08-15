@@ -3,10 +3,13 @@ go-iap
 
 A go implementation for verifying In App Purchases via apple.
 
+### Documentation
+http://godoc.org/github.com/Pallinder/go-iap
+
 ### Usage
 
 ``` 
-  package main
+package main
 
 import (
 	"fmt"
