@@ -34,6 +34,10 @@ const (
 	appleProductionURL string = "https://buy.itunes.apple.com/verifyReceipt"
 )
 
+type Error struct {
+	error
+}
+
 // Given receiptData (base64 encoded) it tries to connect to either the sandbox (useSandbox true) or
 // apples ordinary service (useSandbox false) to validate the receipt. Returns either a receipt struct or an error.
 func VerifyReceipt(receiptData string, useSandbox bool) (*Receipt, error) {
@@ -128,5 +132,5 @@ func verificationError(errCode float64) error {
 		break
 	}
 
-	return errors.New(errorMessage)
+	return &Error{errors.New(errorMessage)}
 }
