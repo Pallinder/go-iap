@@ -31,7 +31,7 @@ type receiptRequestData struct {
 
 const (
 	appleSandboxURL    string = "https://sandbox.itunes.apple.com/verifyReceipt"
-	appleProductionURL string = "https://itunes.apple.com/verifyReceipt"
+	appleProductionURL string = "https://buy.itunes.apple.com/verifyReceipt"
 )
 
 // Given receiptData (base64 encoded) it tries to connect to either the sandbox (useSandbox true) or
