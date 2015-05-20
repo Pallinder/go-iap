@@ -9,20 +9,27 @@ import (
 	"net/http"
 )
 
+// Receipt is information returned by Apple
+//
+// Documentation: https://developer.apple.com/library/ios/releasenotes/General/ValidateAppStoreReceipt/Chapters/ReceiptFields.html#//apple_ref/doc/uid/TP40010573-CH106-SW10
 type Receipt struct {
-	OriginalPurchaseDatePst string `json:"original_purchase_date_pst"`
-	OriginalTransactionId   string `json:"original_transaction_id"`
-	OriginalPurchaseDateMs  string `json:"original_purchase_date_ms"`
-	TransactionId           string `json:"transaction_id"`
-	Quantity                string `json:"quantity"`
-	ProductId               string `json:"product_id"`
-	Bvrs                    string `json:"bvrs"`
-	PurchaseDateMs          string `json:"purchase_date_ms"`
-	PurchaseDate            string `json:"purchase_date"`
-	OriginalPurchaseDate    string `json:"original_purchase_date"`
-	PurchaseDatePst         string `json:"purchase_date_pst"`
-	Bid                     string `json:"bid"`
-	ItemId                  string `json:"item_id"`
+	BundleId                   string            `json:"bundle_id"`
+	ApplicationVersion         string            `json:"application_version"`
+	InApp                      []PurchaseReceipt `json:"in_app"`
+	OriginalApplicationVersion string            `json:"original_application_version"`
+}
+
+type PurchaseReceipt struct {
+	Quantity                  string `json:"quantity"`
+	ProductId                 string `json:"product_id"`
+	TransactionId             string `json:"transaction_id"`
+	OriginalTransactionId     string `json:"original_transaction_id"`
+	PurchaseDate              string `json:"purchase_date"`
+	OriginalPurchaseDate      string `json:"original_purchase_date"`
+	ExpiresDate               string `json:"expires_date"`
+	AppItemId                 string `json:"app_item_id"`
+	VersionExternalIdentifier string `json:"version_external_identifier"`
+	WebOrderLineItemId        string `json:"web_order_line_item_id"`
 }
 
 type receiptRequestData struct {
@@ -31,8 +38,12 @@ type receiptRequestData struct {
 
 const (
 	appleSandboxURL    string = "https://sandbox.itunes.apple.com/verifyReceipt"
-	appleProductionURL string = "https://itunes.apple.com/verifyReceipt"
+	appleProductionURL string = "https://buy.itunes.apple.com/verifyReceipt"
 )
+
+type Error struct {
+	error
+}
 
 // Given receiptData (base64 encoded) it tries to connect to either the sandbox (useSandbox true) or
 // apples ordinary service (useSandbox false) to validate the receipt. Returns either a receipt struct or an error.
@@ -128,5 +139,5 @@ func verificationError(errCode float64) error {
 		break
 	}
 
-	return errors.New(errorMessage)
+	return &Error{errors.New(errorMessage)}
 }
