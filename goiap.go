@@ -41,6 +41,10 @@ const (
 	appleProductionURL string = "https://buy.itunes.apple.com/verifyReceipt"
 )
 
+type ErrorWithCode interface {
+	Code() float64
+}
+
 type Error struct {
 	error
 	errCode float64
