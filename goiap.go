@@ -43,6 +43,11 @@ const (
 
 type Error struct {
 	error
+	errCode float64
+}
+
+func (e *Error) Code() float64 {
+	return e.errCode
 }
 
 // Given receiptData (base64 encoded) it tries to connect to either the sandbox (useSandbox true) or
@@ -139,5 +144,5 @@ func verificationError(errCode float64) error {
 		break
 	}
 
-	return &Error{errors.New(errorMessage)}
+	return &Error{errors.New(errorMessage), errCode}
 }
