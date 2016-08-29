@@ -41,6 +41,7 @@ const (
 	appleProductionURL string = "https://buy.itunes.apple.com/verifyReceipt"
 )
 
+// Simple interface to get the original error code from the error object
 type ErrorWithCode interface {
 	Code() float64
 }
@@ -50,6 +51,7 @@ type Error struct {
 	errCode float64
 }
 
+// Simple method to get the original error code from the error object
 func (e *Error) Code() float64 {
 	return e.errCode
 }
@@ -110,6 +112,7 @@ func sendReceiptToApple(receiptData, url string) (*Receipt, error) {
 	return responseData.ReceiptContent, nil
 }
 
+// Error codes as they returned by the App Store
 const (
 	UnreadableJSON       = 21000
 	MalformedData        = 21002
