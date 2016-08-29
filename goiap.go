@@ -110,37 +110,48 @@ func sendReceiptToApple(receiptData, url string) (*Receipt, error) {
 	return responseData.ReceiptContent, nil
 }
 
+const (
+	UnreadableJSON       = 21000
+	MalformedData        = 21002
+	AuthenticationError  = 21003
+	UnmatchedSecret      = 21004
+	ServerUnavailable    = 21005
+	SubscriptionExpired  = 21006
+	SandboxReceiptOnProd = 21007
+	ProdReceiptOnSandbox = 21008
+)
+
 // Generates the correct error based on a status error code
 func verificationError(errCode float64) error {
 	var errorMessage string
 
 	switch errCode {
-	case 21000:
+	case UnreadableJSON:
 		errorMessage = "The App Store could not read the JSON object you provided."
 		break
-	case 21002:
+	case MalformedData:
 		errorMessage = "The data in the receipt-data property was malformed."
 		break
 
-	case 21003:
+	case AuthenticationError:
 		errorMessage = "The receipt could not be authenticated."
 		break
 
-	case 21004:
+	case UnmatchedSecret:
 		errorMessage = "The shared secret you provided does not match the shared secret on file for your account."
 		break
 
-	case 21005:
+	case ServerUnavailable:
 		errorMessage = "The receipt server is not currently available."
 		break
-	case 21006:
+	case SubscriptionExpired:
 		errorMessage = "This receipt is valid but the subscription has expired. When this status code is returned to your server, " +
 			"the receipt data is also decoded and returned as part of the response."
 		break
-	case 21007:
+	case SandboxReceiptOnProd:
 		errorMessage = "This receipt is a sandbox receipt, but it was sent to the production service for verification."
 		break
-	case 21008:
+	case ProdReceiptOnSandbox:
 		errorMessage = "This receipt is a production receipt, but it was sent to the sandbox service for verification."
 		break
 	default:
