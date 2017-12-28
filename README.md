@@ -1,6 +1,9 @@
 go-iap
 ======
 
+# No longer maintained. 
+If you wish to take this over please contact me.
+
 A go implementation for verifying In App Purchases via apple.
 
 ### Documentation
